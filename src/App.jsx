@@ -13,9 +13,11 @@ export default function App() {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [page, setPage] = useState('forum');
 
   useEffect(() => {
     const saved = localStorage.getItem('cyberpunk_user');
+
     if (saved) {
       setUser(JSON.parse(saved));
       setLoggedIn(true);
@@ -33,7 +35,7 @@ export default function App() {
       localStorage.setItem('cyberpunk_user', JSON.stringify(found));
       setError('');
     } else {
-      setError('ACCESS DENIED // INVALID CREDENTIALS');
+      setError('ACCESS DENIED');
     }
   };
 
@@ -81,31 +83,97 @@ export default function App() {
     <div className="dashboard">
       <header>
         <h1>NIGHT CITY FORUM</h1>
+
         <div>
-          <span>{user.login} | {user.role}</span>
+          <span>
+            {user.login} | {user.role}
+          </span>
+
           <button onClick={logout}>Disconnect</button>
         </div>
       </header>
 
       <main>
-        <div className="card">
-          <h2>Latest Threads</h2>
-
-          <div className="thread">
-            <h3>Blackwall Activity Rising</h3>
-            <p>Unknown AI signals detected beyond the Blackwall.</p>
-          </div>
-
-          <div className="thread">
-            <h3>Mercenary Contracts</h3>
-            <p>High-risk extraction jobs available in Watson.</p>
-          </div>
-
-          <div className="thread">
-            <h3>Cyberware Discussion</h3>
-            <p>Best stealth implants after patch 2.0?</p>
-          </div>
+        <div style={{ display: 'flex', gap: '10px', margin: '20px' }}>
+          <button onClick={() => setPage('forum')}>Forum</button>
+          <button onClick={() => setPage('operators')}>
+            Operators
+          </button>
+          <button onClick={() => setPage('network')}>
+            Network
+          </button>
         </div>
+
+        {page === 'forum' && (
+          <div className="card">
+            <h2>Latest Threads</h2>
+
+            <div className="thread">
+              <h3>Blackwall Activity Rising</h3>
+              <p>
+                Unknown AI signals detected beyond the Blackwall.
+              </p>
+            </div>
+
+            <div className="thread">
+              <h3>Mercenary Contracts</h3>
+              <p>
+                High-risk extraction jobs available in Watson.
+              </p>
+            </div>
+
+            <div className="thread">
+              <h3>Cyberware Discussion</h3>
+              <p>
+                Best stealth implants after patch 2.0?
+              </p>
+            </div>
+          </div>
+        )}
+
+        {page === 'operators' && (
+          <div className="card">
+            <h2>Active Operators</h2>
+
+            <div className="thread">
+              <h3>GhostWire</h3>
+              <p>Status: ONLINE</p>
+            </div>
+
+            <div className="thread">
+              <h3>ZeroTrace</h3>
+              <p>Status: ONLINE</p>
+            </div>
+
+            <div className="thread">
+              <h3>SilverPulse</h3>
+              <p>Status: IDLE</p>
+            </div>
+          </div>
+        )}
+
+        {page === 'network' && (
+          <div className="card">
+            <h2>Network Status</h2>
+
+            <div className="thread">
+              <h3>Blackwall</h3>
+              <p>
+                UNSTABLE SIGNAL ACTIVITY DETECTED
+              </p>
+            </div>
+
+            <div className="thread">
+              <h3>Night City Grid</h3>
+              <p>ONLINE</p>
+            </div>
+
+            <div className="thread">
+              <h3>Encrypted Channels</h3>
+              <p>SECURE CONNECTION ACTIVE</p>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
